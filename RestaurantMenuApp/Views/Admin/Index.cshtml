@@ -1,0 +1,13 @@
+@model DashboardViewModel
+@{ ViewData["Title"] = "Admin Dashboard"; }
+<div class="admin-shell container section-pad">
+ <div class="d-flex flex-wrap justify-content-between align-items-center mb-4"><div><span class="eyebrow">CONTROL CENTRE</span><h1 class="section-title mb-0">Dashboard</h1></div><div class="d-flex gap-2"><a asp-controller="Category" asp-action="Index" class="btn btn-outline-dark">Categories</a><a asp-controller="MenuManagement" asp-action="Index" class="btn btn-gold">Manage menu</a></div></div>
+ <div class="row g-3">
+  <div class="col-6 col-lg"><div class="stat-card"><span>Categories</span><strong>@Model.TotalCategories</strong></div></div>
+  <div class="col-6 col-lg"><div class="stat-card"><span>Menu items</span><strong>@Model.TotalItems</strong></div></div>
+  <div class="col-6 col-lg"><div class="stat-card"><span>Available</span><strong>@Model.AvailableItems</strong></div></div>
+  <div class="col-6 col-lg"><div class="stat-card"><span>Unavailable</span><strong>@Model.UnavailableItems</strong></div></div>
+  <div class="col-6 col-lg"><div class="stat-card"><span>Popular</span><strong>@Model.PopularItems</strong></div></div>
+ </div>
+ <div class="admin-shortcuts mt-4"><a asp-controller="Category" asp-action="Create">＋ Add category</a><a asp-controller="MenuManagement" asp-action="Create">＋ Add food item</a></div>
+</div>

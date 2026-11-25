@@ -1,0 +1,20 @@
+@model MenuIndexViewModel
+@{
+    ViewData["Title"] = "Our Menu";
+}
+<section class="page-heading"><div class="container"><span class="eyebrow">FRESH FROM OUR KITCHEN</span><h1>Our Menu</h1><p>Find something you'll love.</p></div></section>
+<div class="container section-pad">
+<form method="get" class="filter-panel mb-5">
+ <div class="row g-3 align-items-end">
+  <div class="col-lg-4"><label class="form-label">Search dishes</label><input class="form-control" name="Search" value="@Model.Search" placeholder="Try paneer, pasta, soup..."></div>
+  <div class="col-md-6 col-lg-2"><label class="form-label">Category</label><select class="form-select" name="CategoryId"><option value="">All categories</option>@foreach(var c in Model.Categories){<option value="@c.CategoryId" selected="@(Model.CategoryId == c.CategoryId)">@c.CategoryName</option>}</select></div>
+  <div class="col-md-6 col-lg-2"><label class="form-label">Food type</label><select class="form-select" name="FoodType"><option value="">All</option><option value="Veg" selected="@(Model.FoodType == "Veg")">Vegetarian</option><option value="NonVeg" selected="@(Model.FoodType == "NonVeg")">Non-vegetarian</option></select></div>
+  <div class="col-md-6 col-lg-2"><label class="form-label">Sort by</label><select class="form-select" name="Sort"><option value="">Recommended</option><option value="price-low" selected="@(Model.Sort == "price-low")">Price: low to high</option><option value="price-high" selected="@(Model.Sort == "price-high")">Price: high to low</option><option value="name" selected="@(Model.Sort == "name")">Name</option></select></div>
+  <div class="col-md-6 col-lg-2"><button class="btn btn-dark-brown w-100">Apply filters</button></div>
+  <div class="col-12 d-flex flex-wrap gap-4"><label><input type="checkbox" name="AvailableOnly" value="true" checked="@Model.AvailableOnly"> Available only</label><label><input type="checkbox" name="PopularOnly" value="true" checked="@Model.PopularOnly"> Popular dishes</label><a asp-action="Index" class="ms-auto text-link">Clear filters</a></div>
+ </div>
+</form>
+<div class="d-flex justify-content-between mb-3"><h2 class="h4">All dishes</h2><span class="text-muted">@Model.Items.Count item(s)</span></div>
+@if(Model.Items.Count == 0){<div class="empty-state"><h3>No dishes found</h3><p>Try changing your search or filters.</p><a asp-action="Index" class="btn btn-gold">View full menu</a></div>}
+<div class="row g-4">@foreach(var item in Model.Items){<div class="col-sm-6 col-lg-4">@await Html.PartialAsync("_MenuCard", item)</div>}</div>
+</div>

@@ -1,0 +1,15 @@
+@model MenuItemFormViewModel
+@{ ViewData["Title"] = Model.MenuItemId == 0 ? "Add Food Item" : "Edit Food Item"; }
+<div class="container section-pad narrow-copy"><h1 class="section-title">@ViewData["Title"]</h1>
+<form method="post" enctype="multipart/form-data">
+<input asp-for="MenuItemId" type="hidden"><input asp-for="ExistingImageUrl" type="hidden">
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="mb-3"><label asp-for="ItemName" class="form-label"></label><input asp-for="ItemName" class="form-control"><span asp-validation-for="ItemName" class="text-danger"></span></div>
+<div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" rows="3" class="form-control"></textarea><span asp-validation-for="Description" class="text-danger"></span></div>
+<div class="row"><div class="col-md-6 mb-3"><label asp-for="Price" class="form-label"></label><input asp-for="Price" class="form-control"></div><div class="col-md-6 mb-3"><label asp-for="CategoryId" class="form-label">Category</label><select asp-for="CategoryId" asp-items="Model.Categories" class="form-select"><option value="">Choose category</option></select></div></div>
+<div class="row"><div class="col-md-6 mb-3"><label asp-for="FoodType" class="form-label"></label><select asp-for="FoodType" asp-items="Html.GetEnumSelectList<FoodType>()" class="form-select"></select></div><div class="col-md-6 mb-3"><label asp-for="SpicyLevel" class="form-label"></label><select asp-for="SpicyLevel" asp-items="Html.GetEnumSelectList<SpicyLevel>()" class="form-select"></select></div></div>
+<div class="row"><div class="col-md-6 mb-3"><label asp-for="PreparationTime" class="form-label">Preparation time (minutes)</label><input asp-for="PreparationTime" class="form-control"></div><div class="col-md-6 mb-3"><label asp-for="Ingredients" class="form-label"></label><input asp-for="Ingredients" class="form-control"></div></div>
+<div class="mb-3"><label asp-for="ImageFile" class="form-label">Food image (JPG, PNG, WEBP; max 5 MB)</label><input asp-for="ImageFile" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control"><span asp-validation-for="ImageFile" class="text-danger"></span></div>
+<div class="form-check mb-2"><input asp-for="IsAvailable" class="form-check-input"><label asp-for="IsAvailable" class="form-check-label">Available</label></div><div class="form-check mb-3"><input asp-for="IsPopular" class="form-check-input"><label asp-for="IsPopular" class="form-check-label">Popular dish</label></div>
+<button class="btn btn-gold">Save item</button> <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form></div>

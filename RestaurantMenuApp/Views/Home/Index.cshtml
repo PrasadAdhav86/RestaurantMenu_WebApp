@@ -1,0 +1,36 @@
+@model IReadOnlyList<MenuItem>
+@{
+    ViewData["Title"] = "Welcome";
+    var popular = ViewBag.PopularItems as IReadOnlyList<MenuItem> ?? [];
+    var categories = ViewBag.Categories as IReadOnlyList<Category> ?? [];
+}
+<section class="hero">
+  <div class="container hero-content">
+    <span class="eyebrow">A TABLE WORTH GATHERING AROUND</span>
+    <h1>Good food.<br><em>Beautiful moments.</em></h1>
+    <p>Seasonal ingredients, soulful recipes and a little something unexpected in every bite.</p>
+    <a class="btn btn-gold btn-lg" asp-controller="Menu" asp-action="Index">Explore the menu <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+<section class="section-pad container text-center">
+  <span class="eyebrow">WELCOME TO SAFFRON & STONE</span>
+  <h2 class="section-title">A little more than a meal</h2>
+  <p class="intro-copy">We bring people together with generous plates, vibrant flavours and warm hospitality. From familiar favourites to new discoveries, there's always a reason to stay a little longer.</p>
+</section>
+@if (categories.Count > 0) {
+<section class="container pb-5">
+  <div class="d-flex justify-content-between align-items-end mb-4"><div><span class="eyebrow">FIND YOUR FAVOURITE</span><h2 class="section-title mb-0">Explore categories</h2></div><a asp-controller="Menu" asp-action="Index" class="text-link">Full menu →</a></div>
+  <div class="category-pills">@foreach (var category in categories) { <a asp-controller="Menu" asp-action="Index" asp-route-CategoryId="@category.CategoryId">@category.CategoryName</a> }</div>
+</section>
+}
+@if (popular.Count > 0) {
+<section class="warm-section section-pad">
+ <div class="container"><div class="text-center mb-4"><span class="eyebrow">GUEST FAVOURITES</span><h2 class="section-title">The dishes everyone loves</h2></div>
+ <div class="row g-4">@foreach (var item in popular) { <div class="col-sm-6 col-lg-4">@await Html.PartialAsync("_MenuCard", item)</div> }</div>
+ </div>
+</section>
+}
+<section class="container section-pad">
+ <div class="d-flex justify-content-between align-items-end mb-4"><div><span class="eyebrow">MADE FRESH, SERVED WITH CARE</span><h2 class="section-title mb-0">From our kitchen</h2></div><a asp-controller="Menu" asp-action="Index" class="text-link">See all dishes →</a></div>
+ <div class="row g-4">@foreach (var item in Model.Take(4)) { <div class="col-sm-6 col-lg-3">@await Html.PartialAsync("_MenuCard", item)</div> }</div>
+</section>

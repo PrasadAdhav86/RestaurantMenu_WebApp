@@ -1,0 +1,6 @@
+@model IReadOnlyList<Category>
+@{ ViewData["Title"] = "Manage Categories"; }
+<div class="container section-pad"><div class="d-flex justify-content-between align-items-center mb-4"><h1 class="section-title mb-0">Categories</h1><a asp-action="Create" class="btn btn-gold">Add category</a></div>
+<div class="table-responsive"><table class="table align-middle admin-table"><thead><tr><th>Name</th><th>Items</th><th>Order</th><th>Status</th><th class="text-end">Actions</th></tr></thead><tbody>
+@foreach(var c in Model){<tr><td><strong>@c.CategoryName</strong><div class="small text-muted">@c.Description</div></td><td>@c.MenuItems.Count</td><td>@c.DisplayOrder</td><td>@(c.IsActive ? "Active" : "Disabled")</td><td class="text-end"><a asp-action="Edit" asp-route-id="@c.CategoryId" class="btn btn-sm btn-outline-dark">Edit</a> <form asp-action="Toggle" asp-route-id="@c.CategoryId" method="post" class="d-inline"><button class="btn btn-sm btn-outline-secondary">@(c.IsActive ? "Disable" : "Enable")</button></form> <form asp-action="Delete" asp-route-id="@c.CategoryId" method="post" class="d-inline" onsubmit="return confirm('Delete this category?')"><button class="btn btn-sm btn-outline-danger">Delete</button></form></td></tr>}
+</tbody></table></div></div>

@@ -1,0 +1,14 @@
+@model MenuItem
+@{
+    ViewData["Title"] = Model.ItemName;
+}
+<div class="container section-pad">
+ <a asp-action="Index" class="text-link">← Back to menu</a>
+ <div class="row g-5 mt-2 align-items-center">
+  <div class="col-lg-6"><img class="detail-image" src="@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=1200&q=90" : Model.ImageUrl)" alt="@Model.ItemName"></div>
+  <div class="col-lg-6"><span class="eyebrow">@Model.Category?.CategoryName</span><h1 class="detail-title">@Model.ItemName</h1><div class="price fs-3 mb-3">₹@Model.Price.ToString("0.00")</div><p class="lead">@Model.Description</p>
+   <div class="detail-facts"><div><small>FOOD TYPE</small><strong>@Model.FoodType</strong></div><div><small>PREPARATION</small><strong>@Model.PreparationTime min</strong></div><div><small>SPICE LEVEL</small><strong>@Model.SpicyLevel</strong></div><div><small>AVAILABILITY</small><strong>@(Model.IsAvailable ? "Available" : "Unavailable")</strong></div></div>
+   @if(!string.IsNullOrWhiteSpace(Model.Ingredients)){<h5 class="mt-4">Ingredients</h5><p>@Model.Ingredients</p>}
+  </div>
+ </div>
+</div>

@@ -1,0 +1,13 @@
+@model MenuItem
+<article class="food-card h-100">
+  <a asp-controller="Menu" asp-action="Details" asp-route-id="@Model.MenuItemId" class="food-image-link">
+    <img class="food-image" src="@(string.IsNullOrWhiteSpace(Model.ImageUrl) ? "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=900&q=85" : Model.ImageUrl)" alt="@Model.ItemName" loading="lazy">
+  </a>
+  <div class="food-card-body">
+    <div class="d-flex justify-content-between align-items-center mb-2"><span class="food-type @(Model.FoodType == FoodType.Veg ? "veg" : "nonveg")">● @(Model.FoodType == FoodType.Veg ? "VEG" : "NON-VEG")</span><span class="food-category">@Model.Category?.CategoryName</span></div>
+    <h3><a asp-controller="Menu" asp-action="Details" asp-route-id="@Model.MenuItemId">@Model.ItemName</a></h3>
+    <p>@Model.Description</p>
+    <div class="d-flex justify-content-between align-items-center mt-auto"><strong class="price">₹@Model.Price.ToString("0.00")</strong><a class="text-link" asp-controller="Menu" asp-action="Details" asp-route-id="@Model.MenuItemId">Details ↗</a></div>
+    @if (!Model.IsAvailable) { <span class="unavailable-label">Currently unavailable</span> }
+  </div>
+</article>

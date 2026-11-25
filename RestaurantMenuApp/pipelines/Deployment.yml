@@ -1,0 +1,71 @@
+name: Build and publish RestaurantMenuApp
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_VERSION: "10.0.x"
+  PROJECT_PATH: "./RestaurantMenuApp.csproj"
+  CONFIGURATION: "Release"
+
+jobs:
+  build-and-publish:
+    name: Build ASP.NET Core app
+    runs-on: windows-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Display .NET information
+        run: dotnet --info
+
+      - name: Restore dependencies
+        run: dotnet restore "${{ env.PROJECT_PATH }}"
+
+      - name: Build
+        run: dotnet build "${{ env.PROJECT_PATH }}" --configuration "${{ env.CONFIGURATION }}" --no-restore
+
+      - name: Publish for IIS
+        run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration "${{ env.CONFIGURATION }}" --no-build --output "${{ runner.temp }}\publish"
+
+      - name: Verify publish output
+        shell: pwsh
+        run: |
+          $publishPath = Join-Path $env:RUNNER_TEMP "publish"
+          $dll = Join-Path $publishPath "RestaurantMenuApp.dll"
+          $webConfig = Join-Path $publishPath "web.config"
+
+          if (-not (Test-Path $dll)) {
+            throw "Published application DLL not found: $dll. Check the project assembly name."
+          }
+
+          if (-not (Test-Path $webConfig)) {
+            throw "web.config was not generated. Confirm this is an ASP.NET Core Web SDK project."
+          }
+
+          Write-Host "Publish output verified: $publishPath"
+
+      - name: Upload IIS publish artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RestaurantMenuApp-IIS-${{ github.run_number }}
+          path: ${{ runner.temp }}\publish\
+          if-no-files-found: error
+          retention-days: 14
